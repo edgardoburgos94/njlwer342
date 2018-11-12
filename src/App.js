@@ -1,43 +1,48 @@
 import React, { Component } from 'react';
 
 /// Modifica el componente para que se puedan agregar tareas
-
 class App extends Component {
+
   constructor() {
     super()
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
     this.state = {
-      tasks: ['sacar la ropa', 'hacer la cama', 'leer un rato'],
-      newTask: ''
-    }
-  }
-  addTask(event) {
-    event.preventDefault()
-    let oldTasks = this.state.tasks
-    let newTask = this.state.newTask
-    this.setState({
-      tasks: [...oldTasks, newTask],
-      newTask: ''
-    })
-  }
-  updateTask(event) {
-    this.setState({
-      newTask: event.target.value
-    })
+      tasks: [],
+      value: ''
+    };
   }
   render() {
     return (
-      <div class="wrapper">
-        <div class="list">
+      <div className="wrapper">
+        <div className="list">
           <h3>Por hacer:</h3>
-          <ul class="todo">
-            {this.state.tasks.map((task, index) => <li key={index}>{task}</li>)}
+          <ul className="todo">
+            <li>Sacar la ropa</li>
+            <li>Hacer la cama</li>
+            <li>Leer un rato</li>
+            {this.state.tasks.map((task)=><li>{task}</li>)}
           </ul>
-          <form onSubmit={this.addTask.bind(this)}>
-            <input type="text" id="new-task" placeholder="Ingresa una tarea y oprime Enter" value={this.state.newTask} onChange={this.updateTask.bind(this)}/>
-          </form>
+           <form onSubmit={this.handleSubmit}>
+             <input onChange={this.handleChange} value={this.state.value} type="text" id="new-task" placeholder="Ingresa una tarea y oprime Enter" />
+           </form>
         </div>
       </div>
     )
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    this.setState({
+      tasks: this.state.tasks.concat(this.state.value),
+      value:''
+    });
   }
 }
 
